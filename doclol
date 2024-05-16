@@ -6,19 +6,19 @@
           "description": "Fires all the connections connected to the signal Signal with Args.",
           "insert": "firesignal"
       },
-       "localplayer": {
+       "sclocalplayer": {
           "label": "LocalPlayer;",
           "type": "Method",
           "description": "Returns the localplayer",
           "insert": "game.Players.LocalPlayer"
       },
-       "character": {
+       "sccharacter": {
           "label": "Character;",
           "type": "Method",
           "description": "Returns the character",
           "insert": "game.Players.LocalPlayer.Character"
       },
-       "backpack": {
+       "scbackpack": {
           "label": "Backpack;",
           "type": "Method",
           "description": "Returns the backpack",
