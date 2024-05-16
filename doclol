@@ -7,10 +7,10 @@
           "insert": "firesignal"
       },
        "localplayer": {
-          "label": "game.Players.Localplayer;",
+          "label": "localplayer;",
           "type": "Method",
           "description": "Returns the localplayer",
-          "insert": "localplayer"
+          "insert": "game.Players.LocalPlayer"
       },
       "getsenv": {
           "label": "getsenv(localscript);",
