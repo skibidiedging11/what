@@ -7,10 +7,22 @@
           "insert": "firesignal"
       },
        "localplayer": {
-          "label": "localplayer;",
+          "label": "LocalPlayer;",
           "type": "Method",
           "description": "Returns the localplayer",
           "insert": "game.Players.LocalPlayer"
+      },
+       "character": {
+          "label": "Character;",
+          "type": "Method",
+          "description": "Returns the character",
+          "insert": "game.Players.LocalPlayer.Character"
+      },
+       "backpack": {
+          "label": "Backpack;",
+          "type": "Method",
+          "description": "Returns the backpack",
+          "insert": "game.Players.LocalPlayer.Backpack"
       },
       "getsenv": {
           "label": "getsenv(localscript);",
