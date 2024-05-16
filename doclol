@@ -7,19 +7,19 @@
           "insert": "firesignal"
       },
        "sclocalplayer": {
-          "label": "LocalPlayer;",
+          "label": "scLocalPlayer;",
           "type": "Method",
           "description": "Returns the localplayer",
           "insert": "game.Players.LocalPlayer"
       },
        "sccharacter": {
-          "label": "Character;",
+          "label": "scCharacter;",
           "type": "Method",
           "description": "Returns the character",
           "insert": "game.Players.LocalPlayer.Character"
       },
        "scbackpack": {
-          "label": "Backpack;",
+          "label": "scBackpack;",
           "type": "Method",
           "description": "Returns the backpack",
           "insert": "game.Players.LocalPlayer.Backpack"
