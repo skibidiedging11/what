@@ -173,44 +173,45 @@ local function CreateTween(Configs)
 end
 
 local function MakeDrag(Instance)
-  task.spawn(function()
-    SetProps(Instance, {
-      Active = true,
-      AutoButtonColor = false
-    })
-    
-    local DragStart, StartPos, InputOn
-    
-    local function Update(Input)
-      local delta = Input.Position - DragStart
-      local Position = UDim2.new(StartPos.X.Scale, StartPos.X.Offset + delta.X / UIScale, StartPos.Y.Scale, StartPos.Y.Offset + delta.Y / UIScale)
-      Instance.Position = Position  -- Update position directly for real-time feedback
-    end
-    
-    Instance.MouseButton1Down:Connect(function()
-      InputOn = true
-      StartPos = Instance.Position
-      DragStart = UserInputService:GetMouseLocation() 
+    task.spawn(function()
+        SetProps(Instance, {
+            Active = true,
+            AutoButtonColor = false
+        })
+
+        local Dragging = false
+        local DragStart, StartPos
+
+        local function Update(Input)
+            local delta = Input.Position - DragStart
+            local Position = UDim2.new(StartPos.X.Scale, StartPos.X.Offset + delta.X, StartPos.Y.Scale, StartPos.Y.Offset + delta.Y)
+            CreateTween({Instance, "Position", Position, 0.35})
+        end
+
+        Instance.InputBegan:Connect(function(Input)
+            if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
+                Dragging = true
+                DragStart = Input.Position
+                StartPos = Instance.Position
+
+                local Connection
+                Connection = UserInputService.InputChanged:Connect(function(Input)
+                    if Dragging and (Input.UserInputType == Enum.UserInputType.MouseMovement or Input.UserInputType == Enum.UserInputType.Touch) then
+                        Update(Input)
+                    end
+                end)
+
+                UserInputService.InputEnded:Connect(function(Input)
+                    if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
+                        Dragging = false
+                        Connection:Disconnect()
+                    end
+                end)
+            end
+        end)
     end)
-    
-    UserInputService.InputChanged:Connect(function(Input)
-      if InputOn and (Input.UserInputType == Enum.UserInputType.MouseMovement or Input.UserInputType == Enum.UserInputType.Touch) then
-        Update(Input)
-      end
-    end)
-    
-    Instance.MouseButton1Up:Connect(function()
-      if InputOn then
-        InputOn = false
-        local finalPosition = Instance.Position
-        CreateTween({Instance, "Position", finalPosition, 0.35})
-      end
-    end)
-  end)
-  return Instance
+    return Instance
 end
-
-
 
 local function VerifyTheme(Theme)
   for name,_ in pairs(redzlib.Themes) do
