@@ -156,6 +156,22 @@ local function ConnectSave(Instance, func)
   end)
 end
 
+local function CreateTween(Configs)
+  local Instance = Configs[1] or Configs.Instance
+  local Prop = Configs[2] or Configs.Prop
+  local NewVal = Configs[3] or Configs.NewVal
+  local Time = Configs[4] or Configs.Time or 0.5
+  local TweenWait = Configs[5] or Configs.wait or false
+  local TweenInfo = TweenInfo.new(Time, Enum.EasingStyle.Quint)
+  
+  local Tween = TweenService:Create(Instance, TweenInfo, {[Prop] = NewVal})
+  Tween:Play()
+  if TweenWait then
+    Tween.Completed:Wait()
+  end
+  return Tween
+end
+
 local function MakeDrag(Instance)
   task.spawn(function()
     SetProps(Instance, {
@@ -163,18 +179,19 @@ local function MakeDrag(Instance)
       AutoButtonColor = false
     })
     
-    local DragStart, StartPos, InputOn
-    
-    local function Update(Input)
-      local delta = Input.Position - DragStart
-      local Position = UDim2.new(StartPos.X.Scale, StartPos.X.Offset + delta.X / UIScale, StartPos.Y.Scale, StartPos.Y.Offset + delta.Y / UIScale)
-      Instance.Position = Position
-    end
-    
-    Instance.MouseButton1Down:Connect(function()
-      InputOn = true
-    end)
-    
+		local DragStart, StartPos, InputOn
+		
+		local function Update(Input)
+			local delta = Input.Position - DragStart
+			local Position = UDim2.new(StartPos.X.Scale, StartPos.X.Offset + delta.X / UIScale, StartPos.Y.Scale, StartPos.Y.Offset + delta.Y / UIScale)
+			-- Instance.Position = Position
+			CreateTween({Instance, "Position", Position, 0.35})
+		end
+		
+		Instance.MouseButton1Down:Connect(function()
+		  InputOn = true
+		end)
+		
     Instance.InputBegan:Connect(function(Input)
       if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
         StartPos = Instance.Position
@@ -188,10 +205,9 @@ local function MakeDrag(Instance)
         InputOn = false
       end
     end)
-  end)
-  return Instance
+	end)
+	return Instance
 end
-
 
 local function VerifyTheme(Theme)
   for name,_ in pairs(redzlib.Themes) do
