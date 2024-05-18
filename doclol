@@ -173,44 +173,14 @@ local function CreateTween(Configs)
 end
 
 local function MakeDrag(Instance)
-    task.spawn(function()
-        SetProps(Instance, {
-            Active = true,
-            AutoButtonColor = false
-        })
-
-        local Dragging = false
-        local DragStart, StartPos
-
-        local function Update(Input)
-            local delta = Vector2.new(Input.Position.X - DragStart.X, Input.Position.Y - DragStart.Y)
-            local Position = UDim2.new(StartPos.X.Scale, StartPos.X.Offset + delta.X, StartPos.Y.Scale, StartPos.Y.Offset + delta.Y)
-            CreateTween({Instance, "Position", Position, 0.35})
-        end
-
-        Instance.InputBegan:Connect(function(Input)
-            if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
-                Dragging = true
-                DragStart = Vector2.new(Input.Position.X, Input.Position.Y)
-                StartPos = Instance.Position
-
-                local Connection
-                Connection = UserInputService.InputChanged:Connect(function(Input)
-                    if Dragging and (Input.UserInputType == Enum.UserInputType.MouseMovement or Input.UserInputType == Enum.UserInputType.Touch) then
-                        Update(Input)
-                    end
-                end)
-
-                UserInputService.InputEnded:Connect(function(Input)
-                    if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
-                        Dragging = false
-                        Connection:Disconnect()
-                    end
-                end)
-            end
-        end)
-    end)
-    return Instance
+  task.spawn(function()
+    SetProps(Instance, {
+      Active = true,
+      AutoButtonColor = false
+    })
+    
+		Instance
+	return Instance
 end
 
 local function VerifyTheme(Theme)
